@@ -140,13 +140,13 @@ var main = function(toDoObjects){
 
 					var newToDo = {"description": description, "tags": tags};
 
-					//toDoObjects.push({"description" : description, "tags" : tags});
+					//Send the new to-do item to everyone else on the server.
+					socket.emit("add new todo", newToDo);
 
 					//Here we'll do a quick post to our todos route.
 					$.post("/todos", newToDo, function(response){
 						//This callback is called with the server responds.
 						console.log("We posted and the server responded");
-						console.log(response);
 					
 						toDoObjects.push(newToDo);
 

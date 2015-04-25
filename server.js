@@ -69,7 +69,6 @@ app.get("/todos.json", function(req, res){
 
 //Post a new to-do on the app.
 app.post("/todos", function(req, res){
-	console.log(req.body);
 	var newToDo = new ToDo({"description": req.body.description, "tags": req.body.tags});
 
 	//Save the new to-do item in the database.
@@ -88,5 +87,17 @@ app.post("/todos", function(req, res){
 				res.json(result);
 			});
 		}
+	});
+});
+
+io.on("connection", function(socket){
+	console.log("User connected");
+
+	socket.on("add new todo", function(newToDo){
+		console.log(newToDo);
+	});
+
+	socket.on("disconnect", function(){
+		console.log("User disconnected");
 	});
 });
