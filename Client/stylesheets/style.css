@@ -1,0 +1,254 @@
+/*Stylesheet for index.html*/
+
+body{
+	background-color: #f9e933;
+	font-family: "Droid Sans", sans-serif;
+	font-size: 100%;
+}
+
+header, main, footer{
+	min-width: 855px;
+	overflow: auto;
+}
+
+/*Allow header, main, and footer sections to be moved*/
+header .container, main .container, footer .container{
+	max-width: 855px;
+	margin: auto;
+	/*overflow: auto;*/
+	/*border: 1px dashed red;*/
+}
+
+header{
+	background-color: white;
+	/*overflow: auto;*/
+}
+
+header h1{
+	float: left;
+	width: 570px;
+}
+
+header nav{
+	float: right;
+	width: 250px;
+	margin-top:30px;
+}
+
+main{
+	background-color: white;
+	overflow: auto;
+}
+
+.mainContentLeft{
+	float: left;
+	width: 570px;
+}
+
+.mainContentRight{
+	float: right;
+	width: 285px;
+}
+
+.question{
+	color: #1897c7;
+}
+footer{
+	overflow: auto;
+}
+
+.contact{
+	float: left;
+	width: 570px;
+}
+
+.contact > p{
+	margin: 0px;
+	padding: 0px;
+}
+
+.sitemap{
+	float: right;
+	width: 285px;
+}
+
+/*subLeft and subRight are used to split the sitemap menu into two columns*/
+.subLeft{
+	float: left;
+}
+
+.subRight{
+	float: right;
+}
+
+h1, h2, h3, h4, h5, h6{
+	font-family: "Ubuntu", sans-serif;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+h1{
+	font-size: 2.5em;
+}
+
+h2{
+	font-size: 1.7em;
+}
+
+h3{
+	font-size: 1.5em;
+}
+
+h4{
+	font-size: 1.3em;
+}
+
+h5{
+	font-size: 1.0em;
+}
+
+h6{
+	font-size: 0.5em;
+}
+
+p{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+a{
+	text-decoration: none;
+	color: red;
+}
+
+#slideshowLink{
+	font-size: 2em;
+}
+
+/*Underline links when mouse is over them*/
+a:hover{
+	text-decoration: underline;
+}
+
+/*Change color of links that were previously visited*/
+a:visited{
+	color: purple;
+}
+
+/*Italicize and color "Amazeriffic!"*/
+.amazerifficName{
+	color: #b64c4c;
+	font-style: italic;
+}
+
+#reasonHeader{
+	margin-top: 33px;
+}
+
+.reason{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 20px;
+	list-style-type: disc;
+}
+
+.tabs a span{
+	display: inline-block;
+	border-radius: 5px 5px 0 0;
+	width: 150px;
+	margin-right: 10px;
+	text-align: center;
+	/*background: #ddd;*/
+	background-color: #eccccc;
+	padding: 5px;
+}
+
+.tabs a span.active{
+	/*background: #eee;*/
+	background-color: #ecb8b8;
+	margin-top: 33px;
+}
+
+.content{
+	/*background: #eee;*/
+	background-color: #ecb8b8;
+	padding: 10px;
+	margin-bottom: 50px;
+	min-height: 200px;
+}
+
+.content h3{
+	background-color: #8b8bce;
+	border-radius: 5px;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.content ul li{
+	background-color: #6bd3fb;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.content .linkDiv{
+	margin-top: 70px;
+	text-align: center;
+}
+
+.description, .tags{
+	border: none;
+	border-radius: 5px;
+	font-size: 1.1em;
+	display: block;
+	margin: auto;
+}
+
+.label{
+	font-weight: bold;
+	text-align: center;
+}
+
+.content button{
+	background-color: #84f979;
+	border: none;
+	border-radius: 5px;
+	/*Allow submit button to be centered*/
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	/*********************************/
+	font-size: 1.1em;
+}
+
+.content button:hover{
+	cursor: pointer;
+}
+
+/*
+img{
+	width: 75%;
+	height: 75%;
+	margin: 33px;
+}*/
+
+
+.gallery p{
+	padding: 10px;
+	display: inline;
+}
+
+.screenshot{
+	border: 3px solid black;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	width: 20%;
+	height: 20%;
+	display: inline-block;
+}
+
+small{
+	font-size:0.5em;
+}
