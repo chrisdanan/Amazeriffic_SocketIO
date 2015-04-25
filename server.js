@@ -1,8 +1,12 @@
 var express = require("express"),
+	app = express(),
 	http = require("http"),
+	server = http.createServer(app),
+	socketIO = require("socket.io"),
+	io = socketIO(server),
 	bodyParser = require("body-parser"),
 	mongoose = require("mongoose"),
-	app = express(),
+	port = 3000,
 	toDos = [
 		{
 			"description" : "Get groceries",
@@ -30,13 +34,19 @@ var express = require("express"),
 		}
 	];
 
+server.listen(port);
+console.log("Listening on port " + port);
+
+//Set up static directory.
 app.use(express.static(__dirname + "/Client"));
 
+//Connect to database.
 mongoose.connect('mongodb://localhost/amazeriffic');
 
 //Tell Express to parse incoming JSON objects.
 app.use(bodyParser());
 
+//Create a mongoose schema for new to-do items.
 var ToDoSchema = mongoose.Schema({
 	description: String,
 	tags: [String]
@@ -44,11 +54,8 @@ var ToDoSchema = mongoose.Schema({
 
 var ToDo = mongoose.model("ToDo", ToDoSchema);
 
-http.createServer(app).listen(3000);
-
 //This route takes the place of our todos.json file in our example from Chapter 5.
 app.get("/todos.json", function(req, res){
-	//res.json(toDos);
 
 	ToDo.find({}, function(err, toDos){
 		if(err !== null){
@@ -60,10 +67,12 @@ app.get("/todos.json", function(req, res){
 	});
 });
 
+//Post a new to-do on the app.
 app.post("/todos", function(req, res){
 	console.log(req.body);
 	var newToDo = new ToDo({"description": req.body.description, "tags": req.body.tags});
 
+	//Save the new to-do item in the database.
 	newToDo.save(function(err, result){
 		if(err !== null){
 			console.log(err);

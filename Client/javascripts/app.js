@@ -9,6 +9,10 @@
 // Client-side code
 /* jshint browser: true, jquery: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
 
+"use strict";
+
+var socket = io();  //Socket.IO
+
 var organizeByTag = function(toDoObjects){
 	//Create an empty tags array.
 	var tags = [];
@@ -43,7 +47,6 @@ var organizeByTag = function(toDoObjects){
 };
 
 var main = function(toDoObjects){
-	"use strict";
 
 	var toDos = toDoObjects.map(function(toDo){
 		//We'll just return the description of this toDoObject.
@@ -123,22 +126,6 @@ var main = function(toDoObjects){
 				console.log("Third tab clicked")
 			//"Add" Tab
 			} else if ($element.parent().is(":nth-child(4)")){
-				/*
-				$button.on("click", function(){
-					addComment();
-				});
-
-				$inputBox.on("keypress", function(event){
-					if(event.keyCode === 13){
-						addComment();
-					}
-				});
-
-				//Add the input box and button to the third tab.
-				$("Main .content").append($inputBox);
-				$("Main .content").append($button);
-				*/
-
 				var $input = $("<input>").addClass("description"),
 					$inputLabel = $("<p>").text("Description: ").addClass("label"),
 					$tagInput = $("<input>").addClass("tags"),
@@ -168,6 +155,7 @@ var main = function(toDoObjects){
 							return toDo.description;
 						});
 
+						//Empty the input text fields after the user submits his/her input.
 						$input.val("");
 						$tagInput.val("");
 					});
@@ -181,34 +169,6 @@ var main = function(toDoObjects){
 
 				console.log("Fourth tab clicked");
 			}
-			/*
-			//"Demonstration Tab"
-			else if($element.parent().is(":nth-child(5)")){
-				$("Main .content").append($("<h2>").text("Screenshots"));
-				$("Main .content").append($("<p>").text("Click an image to start the slideshow."));
-				$("Main .content").append($("<div class='gallery'>"));
-				$("Main .content .gallery").append($("<p><a class = 'gal' href='images/Amazeriffic_Tabs_1.png' title='Amazeriffic app: default initial list'><img src='images/Amazeriffic_Tabs_1.png' alt='Screenshot 1 of Amazeriffic in action' width='2628' height='17781' class='screenshot'/></a></p>"));
-				$("Main .content .gallery").append($("<p><a class = 'gal' href='images/Amazeriffic_Tabs_2.png' title='Amazeriffic app: inputting a new to-do list item'><img src='images/Amazeriffic_Tabs_2.png' alt='Screenshot 2 of Amazeriffic in action' width='2628' height='1778' class='screenshot'/></a></p>"));
-				$("Main .content .gallery").append($("<p><a class = 'gal' href='images/Amazeriffic_Tabs_3.png' title='Amazeriffic app: newly created item successfully shows in the list'><img src='images/Amazeriffic_Tabs_3.png' alt='Screenshot 3 of Amazeriffic in action' width='2628' height='1778' class='screenshot'/></a></p>"));
-				$("Main .content .gallery").append($("<p><a class = 'gal' href='images/Amazeriffic_Tabs_4.png' title='Amazeriffic app: newly created item also shows in 'Oldest' tab'><img src='images/Amazeriffic_Tabs_4.png' alt='Screenshot 4 of Amazeriffic in action' width='2628' height='1778' class='screenshot'/></a></p>"));
-				$("Main .content").append($("</div>"));
-
-				//Fire the slideshow when the Demonstration Tab is clicked.
-				$("a.gal").colorbox({
-					rel: "a.gal", //Make a slideshow of all <a> elements with the "gal" class.
-					width: "75%", //Set the size of the slideshow.
-					transition: "fade", //Use the fade animation.
-					speed: 500, //Set speed of fade animation (in milliseconds).
-					opacity: 0.5, //Set the opacity of the overlay.
-					open: true,
-
-					//Create a slideshow of the screenshots.
-					slideshow: true,  //Add an automatic slideshow.
-					slideshowSpeed: 5000, //Set speed of slideshow to 5000 milliseconds.
-				});
-				
-				console.log("Fifth tab clicked");
-			}*/
 			//Make browser not follow the link.
 			return false;
 		});//End click handler.
