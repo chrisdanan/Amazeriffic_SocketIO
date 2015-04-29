@@ -95,6 +95,10 @@ io.on("connection", function(socket){
 
 	socket.on("add new todo", function(newToDo){
 		console.log(newToDo);
+
+		//Reference for broadcasting to all except sender:
+		//http://stackoverflow.com/questions/10058226/send-response-to-all-clients-except-sender-socket-io
+		socket.broadcast.emit("updateToDos", newToDo);
 	});
 
 	socket.on("disconnect", function(){

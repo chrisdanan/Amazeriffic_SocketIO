@@ -1,17 +1,11 @@
-/*
- *Name: Christopher Dancarlo Danan
- *Created: February 28, 2015
- *Modified: March 18, 2015
- *Purpose: Give functionality to tabs and to-do lists for main page of Amazeriffic.
-*/
 
-//The following comes from Professor Avery.  It configures JSHint.
 // Client-side code
 /* jshint browser: true, jquery: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
 
 "use strict";
 
 var socket = io();  //Socket.IO
+var tabClicked = "1";
 
 var organizeByTag = function(toDoObjects){
 	//Create an empty tags array.
@@ -89,7 +83,10 @@ var main = function(toDoObjects){
 
 			//"Newest" Tab
 			if ($element.parent().is(":nth-child(1)")){
-				$content = $("<ul>");
+				tabClicked = 1;
+
+				$content = $("<ul class='toDoList'>");
+
 				for(i = (toDos.length - 1); i >= 0; i--)
 				{
 					$content.append($("<li>").text(toDos[i]));
@@ -99,7 +96,9 @@ var main = function(toDoObjects){
 				console.log("First tab clicked");
 			//"Oldest" Tab
 			} else if ($element.parent().is(":nth-child(2)")){
-				$content = $("<ul>");
+				tabClicked = 2;
+
+				$content = $("<ul class='toDoList'>");
 				toDos.forEach(function(todo){
 					$content.append($("<li>").text(todo));
 				});
@@ -108,11 +107,13 @@ var main = function(toDoObjects){
 				console.log("Second tab clicked");
 			//"Tags" Tab
 			} else if ($element.parent().is(":nth-child(3)")){
+				tabClicked = 3;
+
 				var organizedByTag = organizeByTag(toDoObjects);
 
 				organizedByTag.forEach(function(tag){
 					var $tagName = $("<h3>").text(tag.name),
-						$content = $("<ul>");
+						$content = $("<ul class='toDoList " + tag.name + "'>");
 
 					tag.toDos.forEach(function(description){
 						var $li = $("<li>").text(description);
@@ -144,11 +145,11 @@ var main = function(toDoObjects){
 					socket.emit("add new todo", newToDo);
 
 					//Here we'll do a quick post to our todos route.
-					$.post("/todos", newToDo, function(response){
+					$.post("/todos", newToDo, function(allToDos){
 						//This callback is called with the server responds.
 						console.log("We posted and the server responded");
-					
-						toDoObjects.push(newToDo);
+						
+						toDoObjects = allToDos;
 
 						//Update toDos.
 						toDos = toDoObjects.map(function(toDo){
@@ -175,7 +176,43 @@ var main = function(toDoObjects){
 	});//End forEach loop.
 
 	$(".tabs a:first-child span").trigger("click");
+
+	socket.on("updateToDos", function(data){
+		toDoObjects.push(data);
+		toDos = toDoObjects.map(function(toDo){
+			return toDo.description;
+		});
+
+		if(tabClicked === 1){
+			$(".toDoList").prepend($("<li>").text(data.description));
+		}
+		else if(tabClicked === 2){  //Tab is on Oldest
+			$(".toDoList").append($("<li>").text(data.description));
+		} else if(tabClicked === 3){
+			var tags = [];
+
+			data.tags.forEach(function(tag){
+				tags.push(tag);
+			});
+
+
+			tags.forEach(function(tag){
+				if($("." + tag).length > 0){
+					$("." + tag).append($("<li>").text(data.description));
+				} else{
+					var $tagName = $("<h3>").text(tag),
+						$content = $("<ul class='toDoList " + tag + "'>");
+
+					$content.append($("<li>").text(data.description));
+
+					$("main .content").append($tagName);
+					$("main .content").append($content);
+				}
+			});
+		}
+	});
 };
+
 
 $(document).ready(function(){
 	$.getJSON("/todos.json", function(toDoObjects){
