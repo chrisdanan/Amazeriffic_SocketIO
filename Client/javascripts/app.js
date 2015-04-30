@@ -184,11 +184,14 @@ var main = function(toDoObjects){
 		});
 
 		if(tabClicked === 1){
+			window.alert("New to-do item added!");
 			$(".toDoList").prepend($("<li>").text(data.description));
 		}
 		else if(tabClicked === 2){  //Tab is on Oldest
+			window.alert("New to-do item added!");
 			$(".toDoList").append($("<li>").text(data.description));
 		} else if(tabClicked === 3){
+			window.alert("New to-do item added!");
 			var tags = [];
 
 			data.tags.forEach(function(tag){
