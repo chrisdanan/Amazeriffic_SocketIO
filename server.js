@@ -1,3 +1,16 @@
+/*
+ *Names: Christopher Dancarlo Danan and Yuri Van Steenburg
+ *Created: April 20, 2015
+ *Modified: April 29, 2015
+ *For: CPSC 473 Assignment 9
+ *Purpose: Add socket.io to the project for real-time updates.
+*/
+
+// Server-side code
+/* jshint node: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
+
+"use strict";
+
 var express = require("express"),
 	app = express(),
 	http = require("http"),
@@ -6,33 +19,7 @@ var express = require("express"),
 	io = socketIO(server),
 	bodyParser = require("body-parser"),
 	mongoose = require("mongoose"),
-	port = 3000,
-	toDos = [
-		{
-			"description" : "Get groceries",
-			"tags" : ["shopping", "chores"]
-		},
-		{
-			"description" : "Make up some new ToDos",
-			"tags" : ["writing", "work"]
-		},
-		{
-			"description" : "Prep for Monday's class",
-			"tags" : ["work", "teaching"]
-		},
-		{
-			"description" : "Answer emails",
-			"tags" : ["work"]
-		},
-		{
-			"description" : "Take Vane to the park",
-			"tags" : ["fun", "girlfriend"]
-		},
-		{
-			"description" : "Finish writing this book",
-			"tags" : ["writing", "work"]
-		}
-	];
+	port = 3000;
 
 server.listen(port);
 console.log("Listening on port " + port);
@@ -41,7 +28,7 @@ console.log("Listening on port " + port);
 app.use(express.static(__dirname + "/Client"));
 
 //Connect to database.
-mongoose.connect('mongodb://localhost/amazeriffic');
+mongoose.connect("mongodb://localhost/amazeriffic");
 
 //Tell Express to parse incoming JSON objects.
 app.use(bodyParser());
@@ -72,7 +59,7 @@ app.post("/todos", function(req, res){
 	var newToDo = new ToDo({"description": req.body.description, "tags": req.body.tags});
 
 	//Save the new to-do item in the database.
-	newToDo.save(function(err, result){
+	newToDo.save(function(err){
 		if(err !== null){
 			console.log(err);
 			res.send("ERROR");

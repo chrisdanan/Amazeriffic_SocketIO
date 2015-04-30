@@ -1,13 +1,23 @@
+/*
+ *Names: Christopher Dancarlo Danan and Yuri Van Steenburg
+ *Created: April 20, 2015
+ *Modified: April 29, 2015
+ *For: CPSC 473 Assignment 9
+ *Purpose: Add socket.io to the project for real-time updates.
+*/
 
 // Client-side code
 /* jshint browser: true, jquery: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
 
-"use strict";
-
 var socket = io();  //Socket.IO
-var tabClicked = "1";
+var tabClicked = "1";  	//Used to update the DOM when a new to-do item is emitted from the server.
+						//Default tab open is "newest" tab.
 
+//Purpose: Return objects that have the to-do item descriptions organized by tag.
 var organizeByTag = function(toDoObjects){
+
+	"use strict";
+
 	//Create an empty tags array.
 	var tags = [];
 
@@ -42,23 +52,12 @@ var organizeByTag = function(toDoObjects){
 
 var main = function(toDoObjects){
 
+	"use strict";
+
 	var toDos = toDoObjects.map(function(toDo){
 		//We'll just return the description of this toDoObject.
 		return toDo.description;
 	});
-
-	/*
-	$inputBox = $("<input type='text' class='inputCommentBox'>"), //Text box to enter new to-do items.
-	$button = $("<button class='inputCommentBtn'>Submit To-Do Item</button>"); //Button to submit new to-do items.
-
-	//Purpose: Add a comment to the to-do list.
-	var addComment = function(){
-		if($inputBox.val() !== ""){
-			toDos.push($inputBox.val());
-			$inputBox.val("");
-		}
-	};
-	*/
 
 	//Array = [span.active, span, span].
 	$(".tabs a span").toArray().forEach(function(element){
@@ -124,7 +123,7 @@ var main = function(toDoObjects){
 					$("main .content").append($content);
 				});
 
-				console.log("Third tab clicked")
+				console.log("Third tab clicked");
 			//"Add" Tab
 			} else if ($element.parent().is(":nth-child(4)")){
 				var $input = $("<input>").addClass("description"),
@@ -177,32 +176,34 @@ var main = function(toDoObjects){
 
 	$(".tabs a:first-child span").trigger("click");
 
+	//Receive and handle new to-do items emitted from the server.
 	socket.on("updateToDos", function(data){
 		toDoObjects.push(data);
 		toDos = toDoObjects.map(function(toDo){
 			return toDo.description;
 		});
 
-		if(tabClicked === 1){
-			window.alert("New to-do item added!");
+		if(tabClicked === 1){  //If on new tab, prepend the new to-do to the list (since newest items appear on top of list).
 			$(".toDoList").prepend($("<li>").text(data.description));
+			window.alert("New to-do item added!");  //Alert the user there is a new to-do item.
+													//Note: If more time, find a better way to do this - this is ugly and annoys the user!
 		}
-		else if(tabClicked === 2){  //Tab is on Oldest
-			window.alert("New to-do item added!");
+		else if(tabClicked === 2){  //If on oldest tab, append the new to-do to the list (since newest items appear on bottom of list).
 			$(".toDoList").append($("<li>").text(data.description));
-		} else if(tabClicked === 3){
 			window.alert("New to-do item added!");
-			var tags = [];
+		} else if(tabClicked === 3){  //If on tags tab, find the appropriate list to append the new to-do item.
+			var tags = [];  //Holds the tags of the new to-do item.
 
+			//Get the tags of the new to-do item and store them in tags.
 			data.tags.forEach(function(tag){
 				tags.push(tag);
 			});
 
-
+			//Go through each tag of the new to-do item and append the new to-do item description to the appropriate spot.
 			tags.forEach(function(tag){
-				if($("." + tag).length > 0){
+				if($("." + tag).length > 0){  //If the tag already exists in the list, simply append the new to-do description to that list.
 					$("." + tag).append($("<li>").text(data.description));
-				} else{
+				} else{  //If the tag does not exist, create the tag and make a new list, then append that list to the list of tags.
 					var $tagName = $("<h3>").text(tag),
 						$content = $("<ul class='toDoList " + tag + "'>");
 
@@ -212,12 +213,16 @@ var main = function(toDoObjects){
 					$("main .content").append($content);
 				}
 			});
+
+			window.alert("New to-do item added!");
 		}
 	});
 };
 
 
 $(document).ready(function(){
+	"use strict";
+
 	$.getJSON("/todos.json", function(toDoObjects){
 		//Call main with the to-dos as an argument.
 		main(toDoObjects);
